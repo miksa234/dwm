@@ -14,7 +14,7 @@ static       int smartgaps          = 0;        /* 1 means no outer gap when the
 static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
 static int showbar            = 1;        /* 0 means no bar */
 static int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]            = { "terminus:pixelsize=19:antialias=true:autohint=true:spacing=false", "Hack Nerd Font:pixelsize=16"};
+static const char *fonts[]            = { "terminus:pixelsize=17:antialias=true:autohint=true:spacing=false", "Hack Nerd Font:pixelsize=16"};
 
 static char normfgcolor[]       = "#6c6c93";
 static char normbgcolor[]       = "#263238";
