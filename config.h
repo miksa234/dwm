@@ -3,6 +3,8 @@
 #define TERMINAL "st"
 #define TERMCLASS "St"
 
+#define SESSION_FILE "/tmp/dwm-session"
+
 /* appearance */
 static unsigned int borderpx  = 4;        /* border pixel of windows */
 static unsigned int snap      = 32;       /* snap pixel */
@@ -201,7 +203,8 @@ static Key keys[] = {
 	TAGKEYS(                        XK_7,           6)
 	TAGKEYS(                        XK_8,           7)
 	TAGKEYS(                        XK_9,           8)
-	{ MODKEY|ShiftMask,             XK_r,           quit,           {0}},
+//	{ MODKEY|ShiftMask,             XK_r,           quit,           {0}},
+	{ MODKEY|ShiftMask,             XK_r,           quit,           {1} },
 	{ MODKEY|ShiftMask,             XK_e,           spawn,          SHCMD("killall xinit")},
 };
 
