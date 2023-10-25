@@ -26,6 +26,7 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <string.h>
 #include <unistd.h>
 #include <sys/types.h>
@@ -71,6 +72,8 @@
 #define TEXTW(X)                (drw_fontset_getwidth(drw, (X)) + lrpad)
 #define OPAQUE                  0xffU
 #define TRUNC(X,A,B)            (MAX((A), MIN((X), (B))))
+
+//#define RESTORE_PATCH_SEL_PREFIX "Selected: "
 
 /* enums */
 enum { CurNormal, CurResize, CurMove, CurLast }; /* cursor */
@@ -876,7 +879,7 @@ drawbar(Monitor *m)
 	Client *c;
 
 	/* draw status first so it can be overdrawn by tags later */
-	if (m == selmon || 1) { /* status is only drawn on selected monitor */
+	if (m == selmon || 1) { /* status is drawn on all monitors */
 		drw_setscheme(drw, scheme[SchemeNorm]);
 		sw = TEXTW(stext) - lrpad + 2; /* 2px right padding */
 		drw_text(drw, m->ww - sw, 0, sw, bh, 0, stext, 0);
@@ -1466,16 +1469,33 @@ pushstack(const Arg *arg) {
 	arrange(selmon);
 }
 
+// TODO: focus on prev window
 void
 saveSession(void)
 {
 	FILE *fw = fopen(SESSION_FILE, "w");
-	for (Client *c = selmon->clients; c != NULL; c = c->next) { // get all the clients with their tags and write them to the file
-		fprintf(fw, "%lu %u\n", c->win, c->tags);
-	}
+    Monitor *m;
+    Client *c;
+    for (m = mons; m; m = m -> next) {
+        for (c = m->clients; c != NULL; c = c->next) {
+            // get all the clients with their tags and write them to the file
+            fprintf(fw, "%lu %u %i\n", c->win, c->tags, c->mon->num);
+        }
+    }
+    // Write selected client to the file
+//    if (selmon->sel != NULL) {
+//        fprintf(
+//            fw,
+//            RESTORE_PATCH_SEL_PREFIX"%lu %u %i\n",
+//            selmon->sel->win,
+//            selmon->sel->tags,
+//            selmon->num
+//        );
+//    }
 	fclose(fw);
 }
 
+// TODO: focus on prev window
 void
 restoreSession(void)
 {
@@ -1484,29 +1504,77 @@ restoreSession(void)
 	if (!fr)
 		return;
 
-	char *str = malloc(23 * sizeof(char)); // allocate enough space for excepted input from text file
+//    int wasFocused = false;
+//    Client * lastFocusedClient = NULL;
+//    int lastFocusedMonitorTag = 0;
+//    unsigned int lastFocusedClientTag = 0;
+
+	char *str = malloc(30 * sizeof(char)); // allocate enough space for excepted input from text file
 	while (fscanf(fr, "%[^\n] ", str) != EOF) { // read file till the end
 		long unsigned int winId;
 		unsigned int tagsForWin;
-		int check = sscanf(str, "%lu %u", &winId, &tagsForWin); // get data
-		if (check != 2) // break loop if data wasn't read correctly
+        int monNum;
+
+        // Check fo selected window first
+//        if (!wasFocused) {
+//            int check = sscanf(str, RESTORE_PATCH_SEL_PREFIX"%lu %u %i", &winId, &tagsForWin, &monNum); // get data
+//            if (check == 3) {
+//                lastFocusedClientTag = tagsForWin;
+//                lastFocusedMonitorTag = monNum;
+//                for (Client *c = selmon->clients; c != NULL; c = c->next) {
+//                    for (Monitor *m = mons; m; m = m->next) {
+//                        if (m->num == monNum && c->win == winId) {
+//                            lastFocusedClient = c;
+//                            wasFocused = true;
+//                            sendmon(c, m);
+//                            break;
+//                        }
+//                    }
+//                }
+//            }
+//        }
+
+        // get data
+		int check = sscanf(str, "%lu %u %i", &winId, &tagsForWin, &monNum);
+		if (check != 3) // break loop if data wasn't read correctly
 			break;
 
-		for (Client *c = selmon->clients; c ; c = c->next) { // add tags to every window by winId
-			if (c->win == winId) {
-				c->tags = tagsForWin;
-				break;
-			}
-		}
+        for (Client *c = selmon->clients; c ; c = c->next) { // add tags to every window by winId
+            for (Monitor *m = mons; m; m = m->next) {
+                if (m->num == monNum && c->win == winId) {
+                    sendmon(c, m);
+                    c->tags = tagsForWin;
+                    break;
+                }
+            }
+        }
     }
 
-	for (Client *c = selmon->clients; c ; c = c->next) { // refocus on windows
+	for (Client *c = mons->clients; c ; c = c->next) { // refocus on windows
 		focus(c);
 		restack(c->mon);
 	}
 
-	for (Monitor *m = selmon; m; m = m->next) // rearrange all monitors
-		arrange(m);
+    for (Monitor *m = mons; m; m = m->next) { // rearrange all monitors
+        arrange(m);
+    }
+
+//    // Focus on last focused client
+//    if (wasFocused == true) {
+//        // Focus monitor
+//        Arg argMon;
+//        argMon.i = lastFocusedMonitorTag;
+//        focusmon(&argMon);
+//
+//        // Change tag
+//        Arg argTag;
+//        argTag.ui = lastFocusedClientTag;
+//        view(&argTag);
+//
+//        // Focus client
+//        focus(lastFocusedClient);
+//		restack(lastFocusedClient->mon);
+//    }
 
 	free(str);
 	fclose(fr);
@@ -1514,6 +1582,9 @@ restoreSession(void)
 	// delete a file
 	remove(SESSION_FILE);
 }
+
+
+
 
 void
 quit(const Arg *arg)
