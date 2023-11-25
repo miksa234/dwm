@@ -16,7 +16,7 @@ static       int smartgaps          = 0;        /* 1 means no outer gap when the
 static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
 static int showbar            = 1;        /* 0 means no bar */
 static int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]            = { "terminus:pixelsize=19:antialias=true:autohint=true:spacing=false", "Hack Nerd Font:pixelsize=16"};
+static const char *fonts[]            = { "terminus:pixelsize=17:antialias=true:autohint=true:spacing=false", "Hack Nerd Font:pixelsize=16"};
 
 static char normfgcolor[]       = "#6c6c93";
 static char normbgcolor[]       = "#263238";
@@ -137,14 +137,13 @@ static Key keys[] = {
 	{ MODKEY,                       XK_Return,      spawn,          {.v = termcmd }},
 	{ MODKEY,                       XK_grave,       togglescratch,  {.v = scratchpadcmd } },
 	{ MODKEY,                       XK_d,           spawn,          {.v = dmenucmd }},
-	{ MODKEY,                       XK_p,           spawn,          SHCMD("passmenu-otp")},
 	{ ControlMask,                  XK_space,       spawn,          SHCMD("dunstctl close")},
 	{ ControlMask,                  XK_grave,       spawn,          SHCMD("dunstctl close-all")},
 	{ MODKEY,                       XK_p,           spawn,          SHCMD("passmenu-otp")},
 	{ MODKEY|ShiftMask,             XK_b,           spawn,          SHCMD("nautilus")},
 	{ MODKEY,                       XK_b,           spawn,          SHCMD("dmenu-bluetooth")},
 	{ MODKEY,                       XK_n,           spawn,          SHCMD(TERMINAL " -e newsboat")},
-	{ MODKEY,                       XK_c,           spawn,          SHCMD("brave")},
+	{ MODKEY,                       XK_c,           spawn,          SHCMD("firefox")},
 	{ MODKEY|ShiftMask,             XK_c,           spawn,          SHCMD(TERMINAL " -e calcurse")},
 	{ MODKEY,                       XK_m,           spawn,          SHCMD(TERMINAL " -e neomutt")},
 	{ MODKEY|ShiftMask,             XK_w,           spawn,          SHCMD(TERMINAL " -e sudo nmtui")},
