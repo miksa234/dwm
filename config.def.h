@@ -16,7 +16,10 @@ static       int smartgaps          = 0;        /* 1 means no outer gap when the
 static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
 static int showbar            = 1;        /* 0 means no bar */
 static int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]            = { "terminus:pixelsize=17:antialias=true:autohint=true:spacing=false", "Hack Nerd Font:pixelsize=16"};
+static char font0[] = "terminus:size=20";
+static char font1[] = "Noto Color Emoji:size=18";
+static const char *fonts[]            = { font0 , font1 };
+static char dmenufont[] = "terminus:size=20";
 
 static char normfgcolor[]       = "#6c6c93";
 static char normbgcolor[]       = "#263238";
@@ -83,6 +86,9 @@ static const Layout layouts[] = {
  * Xresources preferences to load at startup
  */
 ResourcePref resources[] = {
+        { "font0",              STRING,  &font0},
+        { "font1",              STRING,  &font1},
+        { "dmenufont",          STRING,  &dmenufont},
 		{ "normbgcolor",        STRING,  &normbgcolor },
 		{ "normbordercolor",    STRING,  &normbordercolor },
 		{ "normfgcolor",        STRING,  &normfgcolor },
@@ -120,7 +126,7 @@ ResourcePref resources[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, NULL };
+static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, NULL };
 static const char *termcmd[]  = { "st", NULL };
 static const char scratchpadname[] = "scratchpad";
 static const char *scratchpadcmd[] = { "st", "-t", scratchpadname, "-g", "120x34", NULL };
