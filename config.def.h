@@ -18,26 +18,26 @@ static int showbar            = 1;        /* 0 means no bar */
 static int topbar             = 1;        /* 0 means bottom bar */
 static char font0[] = "terminus:size=20";
 static char font1[] = "Noto Color Emoji:size=18";
-static const char *fonts[]            = { font0 , font1 };
+static const char *fonts[]            = { font1 , font0 };
 static char dmenufont[] = "terminus:size=20";
 
-static char normfgcolor[]       = "#6c6c93";
-static char normbgcolor[]       = "#263238";
+static char normfgcolor[]       = "#ffffff";
+static char normbgcolor[]       = "#000000";
 static char normbordercolor[]   = "#263238";
 static char selfgcolor[]        = "#000000";
-static char selbgcolor[]        = "#606F88";
-static char selbordercolor[]    = "#6c6c93";
-static const unsigned int baralpha = 125;
-static const unsigned int borderalpha = 150;
+static char selbgcolor[]        = "#bcbcbc";
+static char selbordercolor[]    = "#A96C8A";
+static const unsigned int baralpha = 0;
+static const unsigned int borderalpha = 10000;
 static char *colors[][3]        = {
 	/*               fg         bg         border   */
-	[SchemeNorm] = { normfgcolor, normbgcolor, normbordercolor},
-	[SchemeSel]  = { selfgcolor, selbgcolor,  selbordercolor},
+	[SchemeNorm] = { normfgcolor, normbgcolor, normbordercolor },
+	[SchemeSel]  = { selfgcolor, selbgcolor,  selbordercolor },
 };
-static const unsigned int alphas[][3]      = {
+static unsigned int alphas[][3]      = {
     /*               fg      bg        border*/
-    [SchemeNorm] = { OPAQUE, baralpha, borderalpha },
-	[SchemeSel]  = { OPAQUE, baralpha, borderalpha },
+    [SchemeNorm] = { OPAQUE, 150, 125 },
+	[SchemeSel]  = { OPAQUE, 150, 125 },
 };
 
 /* tagging */
@@ -50,6 +50,7 @@ static const Rule rules[] = {
 	 */
 	/* class     instance  title           tags mask  isfloating  isterminal  noswallow  monitor */
 	{ "Gimp",    NULL,     NULL,           0,         1,          0,           0,        -1 },
+	{ "Firefox", NULL,     NULL,           0,         1,          0,           0,        -1 },
 	{ "Zathura", NULL,     NULL,           0,         0,          0,          -1,        -1 },
 	{ "St",      NULL,     NULL,           0,         0,          1,           0,        -1 },
 	{ NULL,      NULL,     "Event Tester", 0,         0,          0,           1,        -1 }, /* xev */
@@ -101,6 +102,10 @@ ResourcePref resources[] = {
 		{ "topbar",          	INTEGER, &topbar },
 		{ "nmaster",          	INTEGER, &nmaster },
 		{ "resizehints",       	INTEGER, &resizehints },
+		{ "baralpha",       	INTEGER, &alphas[SchemeSel][1] },
+		{ "borderalpha",       	INTEGER, &alphas[SchemeSel][2] },
+		{ "baralpha",       	INTEGER, &alphas[SchemeNorm][1] },
+		{ "borderalpha",       	INTEGER, &alphas[SchemeNorm][2] },
 		{ "mfact",      	 	FLOAT,   &mfact },
 };
 
@@ -151,16 +156,16 @@ static Key keys[] = {
 	{ MODKEY,                       XK_n,           spawn,          SHCMD(TERMINAL " -e newsboat")},
 	{ MODKEY,                       XK_c,           spawn,          SHCMD("firefox")},
 	{ MODKEY|ShiftMask,             XK_c,           spawn,          SHCMD(TERMINAL " -e calcurse")},
-	{ MODKEY,                       XK_m,           spawn,          SHCMD(TERMINAL " -e neomutt")},
+	{ MODKEY,                       XK_m,           spawn,          SHCMD("TZ=Europe/Berlin " TERMINAL " -e  neomutt")},
 	{ MODKEY|ShiftMask,             XK_w,           spawn,          SHCMD(TERMINAL " -e sudo nmtui")},
-	{ MODKEY,                       XK_w,           spawn,          SHCMD("xdotool key Super_L+9 && spotify")},
+	{ MODKEY,                       XK_w,           spawn,          SHCMD("xdotool key Super_L+9 && spotify-launcher")},
     { ShiftMask,                    XK_Shift_R,     spawn,          SHCMD("pkill -RTMIN+11 dwmblocks")},
 	{ MODKEY,                       XK_F1,          spawn,          SHCMD("pkill -RTMIN+8 dwmblocks ; toggle volume")},
 	{ MODKEY,                       XK_F2,          spawn,          SHCMD("pkill -RTMIN+8 dwmblocks ; volume down 5")},
 	{ MODKEY,                       XK_F3,          spawn,          SHCMD("pkill -RTMIN+8 dwmblocks ; volume up 5")},
-	{ MODKEY,                       XK_F4,          spawn,          SHCMD("pkill -RTMIN+8 dwmblocks ; toggle sink")},
-	{ MODKEY,                       XK_F5,          spawn,          SHCMD("sudo xbacklight -dec 10")},
-	{ MODKEY,                       XK_F6,          spawn,          SHCMD("sudo xbacklight -inc 10")},
+/*  { MODKEY,                       XK_F4,          spawn,          SHCMD("pkill -RTMIN+8 dwmblocks ; toggle sink")}, */
+	{ MODKEY,                       XK_F4,          spawn,          SHCMD("sudo xbacklight -dec 1")},
+	{ MODKEY,                       XK_F5,          spawn,          SHCMD("sudo xbacklight -inc 1")},
 	{ MODKEY|Mod1Mask,              XK_l,           spawn,          SHCMD("slock")},
 	{ MODKEY|ShiftMask,             XK_z,           togglebar,      {0}},
 	{ MODKEY|Mod1Mask,              XK_i,           incnmaster,     {.i = +1 }},
