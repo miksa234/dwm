@@ -147,7 +147,7 @@ static Key keys[] = {
 	STACKKEYS(MODKEY|ShiftMask,                push)
 	{ MODKEY,                       XK_Return,      spawn,          {.v = termcmd }},
 	{ MODKEY,                       XK_grave,       togglescratch,  {.v = scratchpadcmd } },
-	{ MODKEY,                       XK_d,           spawn,          {.v = dmenucmd }},
+	{ MODKEY,                       XK_d,           spawn,          SHCMD("dmenu_run")},
 	{ ControlMask,                  XK_space,       spawn,          SHCMD("dunstctl close")},
 	{ ControlMask,                  XK_grave,       spawn,          SHCMD("dunstctl close-all")},
 	{ MODKEY,                       XK_p,           spawn,          SHCMD("passmenu-otp")},
@@ -155,6 +155,7 @@ static Key keys[] = {
 	{ MODKEY,                       XK_b,           spawn,          SHCMD("dmenu-bluetooth")},
 	{ MODKEY,                       XK_n,           spawn,          SHCMD(TERMINAL " -e newsboat")},
 	{ MODKEY,                       XK_c,           spawn,          SHCMD("firefox")},
+	{ MODKEY|ShiftMask,             XK_p,           spawn,          SHCMD("pavucontrol")},
 	{ MODKEY|ShiftMask,             XK_c,           spawn,          SHCMD(TERMINAL " -e calcurse")},
 	{ MODKEY,                       XK_m,           spawn,          SHCMD("TZ=Europe/Berlin " TERMINAL " -e  neomutt")},
 	{ MODKEY|ShiftMask,             XK_w,           spawn,          SHCMD(TERMINAL " -e sudo nmtui")},
