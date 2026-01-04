@@ -1,1 +1,14 @@
+# Build artifacts (suckless)
+slock
 *.o
+*.d
+*.a
+*.so
+
+# Nix build results
+result
+result-*
+
+# direnv
+.direnv/
+.envrc.local
