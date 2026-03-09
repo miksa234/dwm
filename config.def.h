@@ -159,7 +159,7 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_c,           spawn,          SHCMD(TERMINAL " -e calcurse")},
 	{ MODKEY,                       XK_m,           spawn,          SHCMD("TZ=Europe/Berlin " TERMINAL " -e  neomutt")},
 	{ MODKEY|ShiftMask,             XK_w,           spawn,          SHCMD(TERMINAL " -e sudo nmtui")},
-	{ MODKEY,                       XK_w,           spawn,          SHCMD("xdotool key Super_L+9 && spotify-launcher")},
+	{ MODKEY,                       XK_w,           spawn,          SHCMD("xdotool key Super_L+9 && spotify")},
     { ShiftMask,                    XK_Shift_R,     spawn,          SHCMD("pkill -RTMIN+11 dwmblocks")},
 	{ MODKEY,                       XK_F1,          spawn,          SHCMD("pkill -RTMIN+8 dwmblocks ; volume toggle")},
 	{ MODKEY,                       XK_F2,          spawn,          SHCMD("pkill -RTMIN+8 dwmblocks ; volume down 5")},
