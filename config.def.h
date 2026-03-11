@@ -166,7 +166,7 @@ static Key keys[] = {
 	{ MODKEY,                       XK_F3,          spawn,          SHCMD("pkill -RTMIN+8 dwmblocks ; volume up 5")},
 	{ MODKEY,                       XK_F4,          spawn,          SHCMD("sudo xbacklight -dec 1")},
 	{ MODKEY,                       XK_F5,          spawn,          SHCMD("sudo xbacklight -inc 1")},
-	{ MODKEY|Mod1Mask,              XK_l,           spawn,          SHCMD("slock")},
+	{ MODKEY|Mod1Mask,              XK_l,           spawn,          SHCMD("sudo slock")},
 	{ MODKEY|ShiftMask,             XK_z,           togglebar,      {0}},
 	{ MODKEY|Mod1Mask,              XK_i,           incnmaster,     {.i = +1 }},
 	{ MODKEY|Mod1Mask,              XK_d,           incnmaster,     {.i = -1 }},
